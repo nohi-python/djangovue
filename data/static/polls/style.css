@@ -1,0 +1,10 @@
+li a {
+    color: green;
+}
+html,body{
+    height: 100%;
+}
+body {
+    background: white url("images/boy&girl.gif") no-repeat;
+    background-size: 100% 100%;
+}

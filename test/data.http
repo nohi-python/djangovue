@@ -1,0 +1,11 @@
+
+## dataRefresh
+POST http://{{server}}/data/dataRefresh?a=1&b=2
+#GET http://{{server}}/data/dataRefresh?a=1&b=2
+Content-Type: application/json
+
+{
+  "code": "SUC",
+  "msg": "ok...",
+  "type": "01"
+}

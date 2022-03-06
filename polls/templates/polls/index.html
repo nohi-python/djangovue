@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<body>
+{% if latest_question_list %}
+    <ul>
+        {% for question in latest_question_list %}
+            <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        {% endfor %}
+    </ul>
+    <br>
+    <h4>第二种方式：url</h4>
+    <p>如果存在命名空间，则不带命名空间的URL报错</p>
+    {#    <ul>#}
+    {#        {% for question in latest_question_list %}#}
+    {#            <li><a href="{%  url 'detail' question.id %}">{{ question.question_text }}</a></li>#}
+    {#        {% endfor %}#}
+    {#    </ul>#}
+    <h4>第三种方式：url 命名空间</h4>
+    <ul>
+        {% for question in latest_question_list %}
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+</body>
+</html>
