@@ -8,9 +8,18 @@ from data.SsqService import SsqService
 
 class TestSsqService(TestCase):
     def test_strreplace(self):
-        str = "1,091,513,907"
-        print(str)
-        print(re.sub(r'[^\d.]', '', str))
+        _str = (1,2)
+        print(_str)
+        if type(_str) is tuple:
+            print(len(_str))
+            _tmp = ''
+            for i in range(len(_str)) :
+                print(i)
+                _tmp = _tmp + ' ' + str(_str[i])
+        print(_tmp)
+        _str = "1,091,513,907"
+        print(_str)
+        print(re.sub(r'[^\d.]', '', _str))
 
 
     def test_getPage(self):

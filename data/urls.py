@@ -17,4 +17,5 @@ urlpatterns = [
     path('json/respJson4', views.respJson4, name='respJson4'),
     # 数据更新
     path('dataRefresh', views.dataRefresh, name='dataRefresh'),
+    path('dataRefreshJob', views.dataRefreshJob, name='dataRefreshJob'),
 ]

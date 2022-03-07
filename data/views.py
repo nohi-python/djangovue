@@ -2,6 +2,7 @@ import json
 
 import simplejson as simplejson
 from django.core import serializers
+from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
@@ -112,24 +113,41 @@ def respJson4(request):
     return HttpResponse(json.dumps(respInfo), content_type='application/json')
 
 
+# 数据初始化任务
+def dataRefreshJob(request):
+    respInfo = {"code": "SUC", "msg": "ok...", "infoList": []}
+    cursor = connection.cursor()
+    cursor.execute("select max(qiCi) from data_ssqmodel")
+    raw = cursor.fetchone()
+    _print(raw)
+    startQiCi = raw
+    endQiCi = '23001'
+    _print('[%s-%s]' % (startQiCi, endQiCi))
+
+    ssqService = SsqService()
+    # ssqService.dataRefresh(startQiCi, endQiCi)
+    return HttpResponse(json.dumps(respInfo), content_type='application/json')
+
+
 # 数据初始化
 def dataRefresh(request):
     respInfo = {"code": "SUC", "msg": "ok...", "infoList": []}
     # 获取数据
     _print("request.method:", request.method)
+    for item in request.GET.keys():
+        print("GET[%s][%s]" % (item.__str__(), request.GET.get(item)))
+
     if request.method == 'POST':
-        for item in request.GET.keys():
-            print("GET[%s][%s]" % (item.__str__(), request.GET.get(item)))
         req = simplejson.loads(request.body)
         print(req)
         for item in request.POST.keys():
             print("[%s][%s]" % (item.__str__(), request.GET.get(item)))
-    elif request.method == 'GET':
-        for item in request.GET.keys():
-            print("[%s][%s]" % (item.__str__(), request.GET.get(item)))
 
-    # ssqService = SsqService()
-    # ssqService.dataRefresh('22001', '22002')
+    startQiCi = request.GET.get("startQiCi")
+    endQiCi = request.GET.get("endQiCi")
+
+    ssqService = SsqService()
+    ssqService.dataRefresh(startQiCi, endQiCi)
 
     # 返回JSON
     infoList = SsqModel.objects.all()

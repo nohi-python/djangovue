@@ -8,13 +8,24 @@ import logging
 import re
 
 
+def _tostr(_str):
+    _tmp = _str
+    if type(_str) is tuple:
+        _tmp = ''
+        for i in range(len(_str)):
+            _tmp = _tmp + ' ' + str(_str[i])
+    return _tmp
+
+
 def _print(msg, *args):
     if args is None or len(args) == 0:
         # logging.debug(msg)
-        print(msg)
+        print(_tostr(msg))
+    elif len(args) == 1:
+        print(_tostr(msg), args)
     else:
         # logging.debug('%s %s' % (msg, args))
-        print('%s %s' % (msg, args))
+        print('%s %s' % (_tostr(msg), args))
 
 
 def justDecimal(str):

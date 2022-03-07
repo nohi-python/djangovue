@@ -1,6 +1,6 @@
 
-## dataRefresh
-POST http://{{server}}/data/dataRefresh?a=1&b=2
+### 数据刷新 startQiCi 开始期次   endQiCi结束期次
+POST http://{{server}}/data/dataRefresh?startQiCi=03001&endQiCi=22001
 #GET http://{{server}}/data/dataRefresh?a=1&b=2
 Content-Type: application/json
 
@@ -9,3 +9,7 @@ Content-Type: application/json
   "msg": "ok...",
   "type": "01"
 }
+
+
+### 数据刷新 定时任务
+GET http://{{server}}/data/dataRefreshJob
