@@ -2,7 +2,6 @@
 # coding: utf-8
 import logging
 import random
-import traceback
 
 import requests
 from bs4 import BeautifulSoup
@@ -10,19 +9,16 @@ from django.core import serializers
 
 from common.common import _print, justDecimal, readfile
 from common.config.config import configs
-from common.exception.exception import ServiceException
 from common.ippool.proxypool import IPProxyPool
-from .models import SsqModel
+from .models import DltModel
 
 
-class SsqService():
+class DltService:
     def __init__(self):  # 类的初始化操作
         self.headers = configs.headers
         self.USER_AGENTS = configs.USER_AGENTS
-        self.web_url = 'https://www.dy2018.com'  # 地址网站
-        # self.web_url_first = 'http://datachart.500.com/ssq/history/newinc/history.php?start=03001&end=22023'  # 要访问的网页地址
-        self.web_url_first = 'http://datachart.500.com/ssq/history/newinc/history.php?start=22001&end=22023'  # 要访问的网页地址
-        self.web_url_pattern = 'http://datachart.500.com/ssq/history/newinc/history.php?start=%s&end=%s'  # 要访问的网页地址
+        self.web_url_first = 'http://datachart.500.com/dlt/history/newinc/history.php?start=22001&end=22023'  # 要访问的网页地址
+        self.web_url_pattern = 'http://datachart.500.com/dlt/history/newinc/history.php?start=%s&end=%s'  # 要访问的网页地址
         self.folder_path = configs.folder_path  # 设置图片要存放的文件目录
         self.ippool = IPProxyPool()
         # self.ippool = IPProxyPool_XXY()
@@ -77,7 +73,7 @@ class SsqService():
             content = r.content.decode('utf-8')
 
         # 模拟
-        # file_name = '/Users/nohi/work/workspaces-seed/billions/datafile/ssq.html'
+        # file_name = '/Users/nohi/work/workspaces-seed/billions/datafile/dlt.html'
         # content = readfile(file_name, 'utf-8')
 
         logging.debug("解析文件内容 start")
@@ -93,36 +89,36 @@ class SsqService():
         ssqList = []
         for tr in all_tr:
             tds = tr.select('td')
-            ssqItem = SsqModel()
-            ssqItem.qiCi = tds[0].text
-            ssqItem.hongYi = tds[1].text
-            ssqItem.hongEr = tds[2].text
-            ssqItem.hongSan = tds[3].text
-            ssqItem.hongSi = tds[4].text
-            ssqItem.hongWu = tds[5].text
-            ssqItem.hongLiu = tds[6].text
-            ssqItem.langQiu = tds[7].text
-            ssqItem.jiangChiJinEr = justDecimal(tds[9].text)
-            ssqItem.yiDengJiangZhuShu = tds[10].text
-            ssqItem.yiDengJiangJiangJin = justDecimal(tds[11].text)
-            ssqItem.erDengJiangZhuShu = tds[12].text
-            ssqItem.erDengJiangJiangJin = justDecimal(tds[13].text)
-            ssqItem.zongTouZhuEr = justDecimal(tds[14].text)
-            ssqItem.kaiJiangRiQi = tds[15].text
-            ssqList.append(ssqItem)
+            dltItem = DltModel()
+            dltItem.qiCi = tds[0].text
+            dltItem.yi = tds[1].text
+            dltItem.er = tds[2].text
+            dltItem.san = tds[3].text
+            dltItem.si = tds[4].text
+            dltItem.wu = tds[5].text
+            dltItem.liu = tds[6].text
+            dltItem.qi = tds[7].text
+            dltItem.jiangChiJinEr = justDecimal(tds[8].text)
+            dltItem.yiDengJiangZhuShu = tds[9].text
+            dltItem.yiDengJiangJiangJin = justDecimal(tds[10].text)
+            dltItem.erDengJiangZhuShu = tds[11].text
+            dltItem.erDengJiangJiangJin = justDecimal(tds[12].text)
+            dltItem.zongTouZhuEr = justDecimal(tds[13].text)
+            dltItem.kaiJiangRiQi = tds[14].text
+            ssqList.append(dltItem)
 
         _print('数据:', serializers.serialize('json', ssqList))
         # _print('数据:', json.dumps(ssqList))
         return ssqList
 
     # 保存数据
-    def saveSsqModel(self, ssqItme: SsqModel):
-        _print('保存数据开始:', ssqItme.qiCi)
-        dataItem = SsqModel.objects.filter(qiCi=ssqItme.qiCi).first()
+    def saveModel(self, dltItem: DltModel):
+        _print('保存数据开始:', dltItem.qiCi)
+        dataItem = DltModel.objects.filter(qiCi=dltItem.qiCi).first()
         if dataItem is None:
-            ssqItme.save()
+            dltItem.save()
         else:
-            _print('保存数据,其次数据存在，其次::', ssqItme.qiCi)
+            _print('保存数据,其次数据存在，其次::', dltItem.qiCi)
 
     # 保存数据
     def saveSsqList(self, ssqList):
@@ -133,7 +129,7 @@ class SsqService():
             if i % 10 == 0:
                 _print('保存[%s]:' % i)
             try:
-                self.saveSsqModel(item)
+                self.saveModel(item)
             except Exception as e:
                 logging.exception(e)
                 continue

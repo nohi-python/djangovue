@@ -1,6 +1,6 @@
 
-### 数据刷新 startQiCi 开始期次   endQiCi结束期次
-POST http://{{server}}/data/dataRefresh?startQiCi=03001&endQiCi=22001
+### 双色球 数据刷新 startQiCi 开始期次   endQiCi结束期次
+POST http://{{server}}/data/ssqDataRefresh?startQiCi=03001&endQiCi=22001
 #GET http://{{server}}/data/dataRefresh?a=1&b=2
 Content-Type: application/json
 
@@ -11,5 +11,21 @@ Content-Type: application/json
 }
 
 
-### 数据刷新 定时任务
-GET http://{{server}}/data/dataRefreshJob
+### 双色球 数据刷新 定时任务
+GET http://{{server}}/data/ssqDataRefreshJob
+
+
+### 双色球 数据刷新 startQiCi 开始期次   endQiCi结束期次
+#POST http://{{server}}/data/dltDataRefresh?startQiCi=07001&endQiCi=07010
+POST http://{{server}}/data/dltDataRefresh?startQiCi=07001&endQiCi=22001
+#GET http://{{server}}/data/dataRefresh?a=1&b=2
+Content-Type: application/json
+
+{
+  "code": "SUC",
+  "msg": "ok...",
+  "type": "01"
+}
+
+### 大乐透  数据刷新 定时任务
+GET http://{{server}}/data/ssqDataRefreshJob

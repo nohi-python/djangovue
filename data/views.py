@@ -7,12 +7,13 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 
-from SsqService import SsqService
+from .DltService import DltService
 from common.common import _print
-from .models import SsqModel
-
 
 # Create your views here.
+from .models import SsqModel, DltModel
+from .SsqService import SsqService
+
 
 def index(request):
     data_list = SsqModel.objects.order_by('-kaiJiangRiQi')[:5]
@@ -30,21 +31,15 @@ def index(request):
 
 
 def detail(request, qiCi):
-    # try:
-    #     question = Question.objects.get(pk=question_id)
-    # except Question.DoesNotExist:
-    #     raise Http404("Question does not exist")
-    # return render(request, 'data/detail.html', {'question': question})
-
     # 尝试获取一个对象，如果不存在则返回 404
     # get_list_or_404()  get_object_or_404()
-    print('qiCi: %s ' % ( qiCi ))
+    print('qiCi: %s ' % (qiCi))
     dataItem = SsqModel.objects.filter(qiCi=qiCi).first()
     print('================ %s ' % (dataItem == None))
 
     if dataItem != None:
-      print('%s, %s ' % (dataItem.id, dataItem.qiCi))
-      dataItemJson = dataItem.__str__()
+        print('%s, %s ' % (dataItem.id, dataItem.qiCi))
+        dataItemJson = dataItem.__str__()
     return render(request, 'data/detail.html', {'dataItem': dataItem, 'dataItemJson': dataItemJson})
 
 
@@ -114,23 +109,24 @@ def respJson4(request):
 
 
 # 数据初始化任务
-def dataRefreshJob(request):
+def ssqDataRefreshJob(request):
     respInfo = {"code": "SUC", "msg": "ok...", "infoList": []}
     cursor = connection.cursor()
     cursor.execute("select max(qiCi) from data_ssqmodel")
     raw = cursor.fetchone()
     _print(raw)
-    startQiCi = raw
+    startQiCi = raw[0]
     endQiCi = '23001'
+    print(startQiCi)
     _print('[%s-%s]' % (startQiCi, endQiCi))
 
     ssqService = SsqService()
-    # ssqService.dataRefresh(startQiCi, endQiCi)
+    ssqService.dataRefresh(startQiCi, endQiCi)
     return HttpResponse(json.dumps(respInfo), content_type='application/json')
 
 
 # 数据初始化
-def dataRefresh(request):
+def ssqDataRefresh(request):
     respInfo = {"code": "SUC", "msg": "ok...", "infoList": []}
     # 获取数据
     _print("request.method:", request.method)
@@ -151,6 +147,51 @@ def dataRefresh(request):
 
     # 返回JSON
     infoList = SsqModel.objects.all()
+    # 2. 将数据序列化成json格式   date类型的数据不能直接系列化 ensure_ascii=False 修改乱码的现象
+    respInfo["infoList"] = json.loads(serializers.serialize('json', queryset=infoList))
+    # 3. 返回
+    return HttpResponse(json.dumps(respInfo), content_type='application/json')
+
+
+# 数据初始化任务
+def dltDataRefreshJob(request):
+    respInfo = {"code": "SUC", "msg": "ok...", "infoList": []}
+    cursor = connection.cursor()
+    cursor.execute("select max(qiCi) from data_dltmodel")
+    raw = cursor.fetchone()
+    _print(raw)
+    startQiCi = raw[0]
+    endQiCi = '23001'
+    print(startQiCi)
+    _print('[%s-%s]' % (startQiCi, endQiCi))
+
+    service = DltService()
+    service.dataRefresh(startQiCi, endQiCi)
+    return HttpResponse(json.dumps(respInfo), content_type='application/json')
+
+
+# 数据初始化
+def dltDataRefresh(request):
+    respInfo = {"code": "SUC", "msg": "ok...", "infoList": []}
+    # 获取数据
+    _print("request.method:", request.method)
+    for item in request.GET.keys():
+        print("GET[%s][%s]" % (item.__str__(), request.GET.get(item)))
+
+    if request.method == 'POST':
+        req = simplejson.loads(request.body)
+        print(req)
+        for item in request.POST.keys():
+            print("[%s][%s]" % (item.__str__(), request.GET.get(item)))
+
+    startQiCi = request.GET.get("startQiCi")
+    endQiCi = request.GET.get("endQiCi")
+
+    service = DltService()
+    service.dataRefresh(startQiCi, endQiCi)
+
+    # 返回JSON
+    infoList = DltModel.objects.all()
     # 2. 将数据序列化成json格式   date类型的数据不能直接系列化 ensure_ascii=False 修改乱码的现象
     respInfo["infoList"] = json.loads(serializers.serialize('json', queryset=infoList))
     # 3. 返回

@@ -6,9 +6,8 @@ import datetime
 
 # Create your models here.
 
-# ssq
+# 双色球
 class SsqModel(models.Model):
-    # ...
     def __str__(self):
         return self.qiCi + self.kaiJiangRiQi.__str__()
 
@@ -30,6 +29,8 @@ class SsqModel(models.Model):
     # 二等奖 注数、资金
     erDengJiangZhuShu = models.IntegerField(default=0)
     erDengJiangJiangJin = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+    # 总投注额
+    zongTouZhuEr = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
     @admin.display(
         boolean=True,
@@ -41,3 +42,40 @@ class SsqModel(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.kaiJiangRiQi <= now
 
+
+# 大乐透
+class DltModel(models.Model):
+
+    def __str__(self):
+        return self.qiCi + self.kaiJiangRiQi.__str__()
+
+    qiCi = models.CharField(max_length=20)
+    kaiJiangRiQi = models.CharField(max_length=20)
+    # 红球1-6 蓝球
+    yi = models.IntegerField(default=0)
+    er = models.IntegerField(default=0)
+    san = models.IntegerField(default=0)
+    si = models.IntegerField(default=0)
+    wu = models.IntegerField(default=0)
+    liu = models.IntegerField(default=0)
+    qi = models.IntegerField(default=0)
+    # 奖池金额
+    jiangChiJinEr = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+    # 一等奖 注数、资金
+    yiDengJiangZhuShu = models.IntegerField(default=0)
+    yiDengJiangJiangJin = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+    # 二等奖 注数、资金
+    erDengJiangZhuShu = models.IntegerField(default=0)
+    erDengJiangJiangJin = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+    # 总投注额
+    zongTouZhuEr = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+    @admin.display(
+        boolean=True,
+        ordering='kaiJiangRiQi',
+        description='开奖日期?',
+    )
+    def was_kaijiangriqi_recently(self):
+        # return self.pub_date >= timezone.now()
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.kaiJiangRiQi <= now

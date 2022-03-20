@@ -1,14 +1,12 @@
 # -*- coding : utf-8 -*-
 # coding: utf-8
-import json
-import logging
 
 
 # 打印公共方法
 import re
 
 
-def _tostr(_str):
+def tostr(_str):
     _tmp = _str
     if type(_str) is tuple:
         _tmp = ''
@@ -17,22 +15,25 @@ def _tostr(_str):
     return _tmp
 
 
+# 打印
 def _print(msg, *args):
     if args is None or len(args) == 0:
         # logging.debug(msg)
-        print(_tostr(msg))
+        print(tostr(msg))
     elif len(args) == 1:
-        print(_tostr(msg), args)
+        print(tostr(msg), args)
     else:
         # logging.debug('%s %s' % (msg, args))
-        print('%s %s' % (_tostr(msg), args))
+        print('%s %s' % (tostr(msg), args))
 
 
-def justDecimal(str):
-    if str is None or len(str) == 0:
+# 删除非数字字符
+def justDecimal(_str):
+    if _str is None or len(_str) == 0:
         return 0
     else:
-        return re.sub(r'[^\d.]', '', str)
+        return re.sub(r'[^\d.]', '', _str)
+
 
 # 读取文件
 def readfile(path, charSet='gbk'):
@@ -46,5 +47,5 @@ def readfile(path, charSet='gbk'):
     finally:
         if f:
             f.close()
-    _print("content", content)
+    _print("content:", content)
     return content

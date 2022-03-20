@@ -16,6 +16,10 @@ urlpatterns = [
     path('json/respJson3', views.respJson3, name='respJson3'),
     path('json/respJson4', views.respJson4, name='respJson4'),
     # 数据更新
-    path('dataRefresh', views.dataRefresh, name='dataRefresh'),
-    path('dataRefreshJob', views.dataRefreshJob, name='dataRefreshJob'),
+    path('ssqDataRefresh', views.ssqDataRefresh, name='ssqDataRefresh'),
+    path('ssqDataRefreshJob', views.ssqDataRefreshJob, name='ssqDataRefreshJob'),
+
+    # 数据更新
+    path('dltDataRefresh', views.dltDataRefresh, name='dltDataRefresh'),
+    path('dltDataRefreshJob', views.dltDataRefreshJob, name='dltDataRefreshJob'),
 ]

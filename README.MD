@@ -19,6 +19,8 @@
 * python3 manage.py migrate polls （appname）  # 创建表结构
 * 以上步骤都得执行 *
 
+* ModuleNotFoundError: No module named 'common'
+  * settings.py 增加： sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))   common在上层目录
 
 
 ### 管理工具
