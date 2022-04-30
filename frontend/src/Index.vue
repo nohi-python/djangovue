@@ -24,6 +24,9 @@ export default {
     <router-link to="/DemoAjax">DemoAjax</router-link>&nbsp;&nbsp;
     <router-link to="/ShitiIndex">Just Exam</router-link>&nbsp;&nbsp;
   </p>
+  <p>
+    <router-link to="/SsqIndex">SsqIndex</router-link>&nbsp;&nbsp;
+  </p>
 </template>
 
 <style>

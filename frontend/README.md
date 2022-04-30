@@ -11,3 +11,8 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 * yarn add eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-vue -D
 * npm eslint --init
   * 一些配置
+  
+* 检查配置
+    *  ./node_modules/eslint/bin/eslint.js . --ext .js --ext .jsx --cache 
+    * 增加 --fix，可以修复
+

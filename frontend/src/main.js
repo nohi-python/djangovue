@@ -11,9 +11,9 @@ import test from './store/test'
 import shijuan from '../static/data/shijuan.json'
 import shiti from '../static/data/shiti.json'
 
-
 const app = createApp(App)
 app.use(ElementPlus)
+
 app.use(routes)
 app.use(test)
 app.mount('#app')
@@ -33,7 +33,7 @@ const getShiti = new Promise((resolve, reject) => {
 unuser(getShijuan)
 unuser(getShiti)
 
-function unuser(obj) {
+function unuser (obj) {
   if (typeof obj == 'undefined') {
     console.info('undifine')
   }
