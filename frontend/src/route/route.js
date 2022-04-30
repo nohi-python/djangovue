@@ -15,7 +15,7 @@ const routes = [
   { path: '/', redirect: '/Index' },
   { path: '/Index', component: Index },
   { path: '/DemoAjax', component: DemoAjax },
-  { path: '/ShitiIndex', component: ShitiIndex},
+  { path: '/ShitiIndex', component: ShitiIndex },
   { path: '/shiti', component: shiti },
   { path: '/SsqIndex', component: SsqIndex },
 ]
@@ -23,7 +23,7 @@ const routes = [
 const router = createRouter({
   // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
   history: createWebHashHistory(),
-  routes // `routes: routes` 的缩写
+  routes, // `routes: routes` 的缩写
 })
 
 router.beforeEach((to, from) => {

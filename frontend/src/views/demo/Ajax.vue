@@ -4,14 +4,24 @@ import { ref, watch } from 'vue'
 import axios from 'axios'
 
 export default {
-  setup () {
+  async beforeRouteUpdate(to, from) {
+    // 对路由变化做出响应...
+    console.info('to.params.id:' + to.params.id)
+  },
+  beforeRouteLeave(to, from) {
+    const answer = window.confirm(
+      'Do you really want to leave? you have unsaved changes!'
+    )
+    if (!answer) return false
+  },
+  setup() {
     const route = useRoute()
     const userData = ref()
 
     // 当参数更改时获取用户信息
     watch(
       () => route.params,
-      async newParams => {
+      async (newParams) => {
         console.info('route.params:' + JSON.stringify(route.params))
         userData.value = route.params // await fetchUser(newParams.id)
       }
@@ -21,65 +31,66 @@ export default {
     onBeforeRouteUpdate(async (to, from) => {
       // 仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
       if (to.params.id !== from.params.id) {
-        console.info('onBeforeRouteUpdate route.params:' + JSON.stringify(route.params))
+        console.info(
+          'onBeforeRouteUpdate route.params:' + JSON.stringify(route.params)
+        )
       }
     })
   },
-  data () {
+  data() {
     return {
       questionJson: [],
-      questionList: []
+      questionList: [],
     }
   },
   computed: {
-    username () {
+    username() {
       // 我们很快就会看到 `params` 是什么
       return this.$route.query.username
     },
-    userid () {
+    userid() {
       return this.$route.params.id
-    }
-  },
-  methods: {
-    goToHome () {
-      this.$router.push('/')
     },
-    refresh () {
-      console.info('Ajax...refresh')
-      axios
-        .get('http://127.0.0.1:8000/polls/questionJsonTwo')
-        .then(response => (this.questionJson = response.data))
-        .catch(function (error) { // 请求失败处理
-          console.log(error)
-        })
-    },
-    refreshDbData () {
-      console.info('Ajax...refreshDbData')
-      axios
-        .get('http://127.0.0.1:8000/polls/questionList')
-        .then(response => (this.questionList = response.data))
-        .catch(function (error) { // 请求失败处理
-          console.log(error)
-        })
-    }
   },
-  created () {
+  created() {
     this.$watch(
       () => this.$route.params,
       (toParams, previousParams) => {
         // 对路由变化做出响应...
-        console.info('toParams:' + JSON.stringify(toParams) + ',previousParams:' + JSON.stringify(previousParams))
+        console.info(
+          'toParams:' +
+            JSON.stringify(toParams) +
+            ',previousParams:' +
+            JSON.stringify(previousParams)
+        )
       }
     )
   },
-  async beforeRouteUpdate (to, from) {
-    // 对路由变化做出响应...
-    console.info('to.params.id:' + to.params.id)
+  methods: {
+    goToHome() {
+      this.$router.push('/')
+    },
+    refresh() {
+      console.info('Ajax...refresh')
+      axios
+        .get('http://127.0.0.1:8000/polls/questionJsonTwo')
+        .then((response) => (this.questionJson = response.data))
+        .catch(function (error) {
+          // 请求失败处理
+          console.log(error)
+        })
+    },
+    refreshDbData() {
+      console.info('Ajax...refreshDbData')
+      axios
+        .get('http://127.0.0.1:8000/polls/questionList')
+        .then((response) => (this.questionList = response.data))
+        .catch(function (error) {
+          // 请求失败处理
+          console.log(error)
+        })
+    },
   },
-  beforeRouteLeave (to, from) {
-    const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-    if (!answer) return false
-  }
 }
 </script>
 <template>
@@ -97,7 +108,7 @@ export default {
         <td>{{ item.addr }}</td>
       </tr>
     </table>
-     <h4>questionList</h4>
+    <h4>questionList</h4>
     <table>
       <tr v-for="(item, index) in questionList" :key="item.id">
         <td>{{ index }}</td>
@@ -106,9 +117,6 @@ export default {
       </tr>
     </table>
   </div>
-
 </template>
 
-<style>
-
-</style>
+<style></style>

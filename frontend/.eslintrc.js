@@ -1,45 +1,67 @@
-module.exports = {
+// @ts-check
+const { defineConfig } = require('eslint-define-config')
+module.exports = defineConfig({
+  root: true,
   env: {
     browser: true,
-    es2021: true,
-    node: true
+    node: true,
+    es6: true,
+  },
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    jsxPragma: 'React',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   extends: [
-    // 'standard',
-    // 新增这里vue3支持
-    'plugin:vue/vue3-recommended'
-  ],
-  // 这是初始生成的 将其中的内容更改为下面的
-  // parserOptions: {
-  //   ecmaVersion: 'latest',
-  //   sourceType: 'module'
-  // },
-
-  // 新的内容
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {
-      modules: true
-    },
-    requireConfigFile: false,
-    parser: '@babel/eslint-parser'
-  },
-  plugins: [
-    'vue'
+    'plugin:vue/vue3-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
   ],
   rules: {
-    semi: [2, 'never'], // 禁止尾部使用分号“ ; ”
-    'no-var': 'error', // 禁止使用 var
-    indent: ['error', 2], // 缩进2格
-    'no-mixed-spaces-and-tabs': 'error', // 不能空格与tab混用
-    quotes: [2, 'single'], // 使用单引号
-    'vue/html-closing-bracket-newline': 'off', // 不强制换行
-    'vue/singleline-html-element-content-newline': 'off', // 不强制换行
-    'vue/max-attributes-per-line': ['error', {
-      singleline: { max: 5 },
-      multiline: { max: 5 }
-    }] // vue template模板元素第一行最多5个属性
-    // 其它的规则可以去eslint查看，根据自己需要进行添加
-  }
-}
+    'vue/script-setup-uses-vars': 'error',
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    'vue/custom-event-name-casing': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-unused-vars': 'error',
+    'space-before-function-paren': 'off',
+
+    'vue/attributes-order': 'off',
+    'vue/one-component-per-file': 'off',
+    'vue/html-closing-bracket-newline': 'off',
+    'vue/max-attributes-per-line': 'off',
+    'vue/multiline-html-element-content-newline': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/attribute-hyphenation': 'off',
+    'vue/require-default-prop': 'off',
+    'vue/require-explicit-emits': 'off',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always',
+          normal: 'never',
+          component: 'always',
+        },
+        svg: 'always',
+        math: 'always',
+      },
+    ],
+    'vue/multi-word-component-names': 'off',
+  },
+})

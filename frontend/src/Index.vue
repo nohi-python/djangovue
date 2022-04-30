@@ -6,29 +6,25 @@ console.info('Index.vue script')
 export default {
   data: function () {
     return {
-      replace: true
+      replace: true,
     }
-  }
+  },
 }
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png"/>
+  <img alt="Vue logo" src="./assets/logo.png" />
   <p>
     <!--使用 router-link 组件进行导航 -->
     <!--通过传递 `to` 来指定链接 -->
     <!--`<router-link>` 将呈现一个带有正确 `href` 属性的 `<a>` 标签-->
-    <router-link to="/">Go to Index</router-link>&nbsp;&nbsp;
+    <router-link to="/">Go to Index</router-link>
   </p>
   <p>
-    <router-link to="/DemoAjax">DemoAjax</router-link>&nbsp;&nbsp;
-    <router-link to="/ShitiIndex">Just Exam</router-link>&nbsp;&nbsp;
+    <router-link to="/DemoAjax">DemoAjax</router-link>
+    <router-link to="/ShitiIndex">Just Exam</router-link>
   </p>
   <p>
-    <router-link to="/SsqIndex">SsqIndex</router-link>&nbsp;&nbsp;
+    <router-link to="/SsqIndex">SsqIndex</router-link>
   </p>
 </template>
-
-<style>
-
-</style>

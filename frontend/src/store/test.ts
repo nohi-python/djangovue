@@ -1,4 +1,4 @@
-import {createStore} from 'vuex'
+import { createStore } from 'vuex'
 
 const store = createStore({
   state() {
@@ -10,7 +10,7 @@ const store = createStore({
         { id: 3, text: 'id3', done: true },
         { id: 4, text: 'id4', done: false },
         { id: 5, text: 'id5', done: false },
-      ]
+      ],
     }
   },
   mutations: {
@@ -19,13 +19,13 @@ const store = createStore({
     },
     double(state) {
       state.count = state.count * 2
-    }
+    },
   },
   getters: {
     doneTodos: (state) => {
-      return state.todos.filter(todo => todo.done)
-    }
-  }
+      return state.todos.filter((todo) => todo.done)
+    },
+  },
 })
 
 export default store
