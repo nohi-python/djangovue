@@ -4,6 +4,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // 也可以从其他文件导入
 const Index = () => import('../Index.vue')
 const DemoAjax = () => import('../views/demo/Ajax.vue')
+const ShitiIndex = () => import('../views/ShitiIndex.vue')
+const shiti = () => import('../views/shiti/Start.vue')
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -11,7 +13,9 @@ const DemoAjax = () => import('../views/demo/Ajax.vue')
 const routes = [
   { path: '/', redirect: '/Index' },
   { path: '/Index', component: Index },
-  { path: '/DemoAjax', component: DemoAjax }
+  { path: '/DemoAjax', component: DemoAjax },
+  { path: "/ShitiIndex", component: ShitiIndex},
+  { path: "/shiti", component: shiti },
 ]
 
 const router = createRouter({

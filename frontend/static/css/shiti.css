@@ -1,0 +1,14 @@
+.st-panel {
+    padding: 10px;
+    text-align: left;
+}
+.st-panel .el-row{
+    margin-bottom: 10px;
+}
+
+.st_result .error{
+    color: red;
+}
+.st_result .suc{
+    color: green;
+}
