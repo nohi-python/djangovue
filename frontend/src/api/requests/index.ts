@@ -11,9 +11,3 @@ axios.interceptors.request.use(
     return Promise.error(error)
   }
 )
-
-function getName(params) {
-  return axios.get(`xx/xx/${params}`)
-}
-
-export { getName }

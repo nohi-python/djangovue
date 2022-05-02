@@ -6,8 +6,8 @@ from . import views
 app_name = 'data'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<str:qiCi>/', views.detail, name='detail'),
-    path('<str:qiCi>/results', views.results, name='results'),
+    path('ssq/<str:qiCi>/', views.detail, name='detail'),
+    path('ssq/<str:qiCi>/results', views.results, name='results'),
 
     # 获取JSON数据
     path('infoList', views.infoList, name='infoList'),
@@ -22,4 +22,7 @@ urlpatterns = [
     # 数据更新
     path('dltDataRefresh', views.dltDataRefresh, name='dltDataRefresh'),
     path('dltDataRefreshJob', views.dltDataRefreshJob, name='dltDataRefreshJob'),
+
+    # 数据列表
+    path('ssqList', views.ssqList, name='ssqList'),
 ]

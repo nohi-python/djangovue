@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 import { loadEnv } from 'vite'
-import type { UserConfig, ConfigEnv } from 'vite'
+import type { ConfigEnv } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import WindiCSS from 'vite-plugin-windicss'
 import VueJsx from '@vitejs/plugin-vue-jsx'
@@ -21,7 +21,36 @@ function pathResolve(dir: string) {
 }
 
 // https://vitejs.dev/config/
-export default ({ command, mode }: ConfigEnv): UserConfig => {
+export default ({
+  command,
+  mode,
+}: ConfigEnv): {
+  server: { proxy: {}; port: number; host: string; hmr: { overlay: boolean } }
+  css: {
+    preprocessorOptions: {
+      less: { javascriptEnabled: boolean; additionalData: string }
+    }
+  }
+  resolve: {
+    extensions: string[]
+    alias: (
+      | { find: string; replacement: string }
+      | { find: RegExp; replacement: string }
+    )[]
+  }
+  build: {
+    terserOptions: {
+      compress: { drop_debugger: boolean; drop_console: boolean }
+    }
+    minify: string
+    sourcemap: string | boolean
+    brotliSize: boolean
+    outDir: any
+  }
+  plugins: (Plugin | Plugin | Plugin[] | Plugin$1 | PluginOption[])[]
+  optimizeDeps: { include: string[] }
+  base: any
+} => {
   let env = null
   const isBuild = command === 'build'
   if (!isBuild) {
@@ -138,6 +167,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         //   changeOrigin: true,
         //   rewrite: path => path.replace(/^\/api/, '')
         // }
+        '/api': {
+          target: 'http://localhost:8000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
       },
       hmr: {
         overlay: false,

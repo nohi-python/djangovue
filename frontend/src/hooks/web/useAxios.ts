@@ -8,7 +8,20 @@ const { default_headers } = config
 
 export const useAxios = () => {
   const request = <T>(option: AxiosConfig): AxiosPromise<T> => {
-    const { url, method, params, data, headersType, responseType } = option
+    // eslint-disable-next-line prefer-const
+    let { url, method, params, data, headersType, responseType } = option
+
+    if (method.toUpperCase() == 'POST') {
+      data = {
+        header: {
+          tranCode: 'QUERY',
+          reqFlow: '20220501001',
+          reqTime: new Date().getTime(),
+        },
+        body: data,
+      }
+    }
+
     return service({
       url: url,
       method,

@@ -53,29 +53,30 @@
     </el-form-item>
   </el-form>
 
-  <el-table :data="ssqList" style="width: 100%">
-    <el-table-column prop="qiCi" label="期次" />
-    <el-table-column prop="kaiJiangRiQi" label="日期" width="110px" />
+  <el-table
+    :data="ssqList"
+    style="width: 100%"
+    :header-cell-style="{ textAlign: 'center' }"
+    :cell-style="{ textAlign: 'center' }"
+  >
+    <el-table-column prop="fields.qiCi" label="期次" width="120px" />
+    <el-table-column prop="fields.kaiJiangRiQi" label="日期" width="140px" />
     <el-table-column label="开奖号码">
-      <el-table-column prop="name" label="红1" />
-      <el-table-column prop="name" label="红2" />
-      <el-table-column prop="name" label="红3" />
-      <el-table-column prop="name" label="红4" />
-      <el-table-column prop="name" label="红5" />
-      <el-table-column prop="name" label="红6" />
-      <el-table-column prop="name" label="蓝" />
+      <el-table-column prop="fields.hongYi" label="红1" width="80px" />
+      <el-table-column prop="fields.hongEr" label="红2" width="80px" />
+      <el-table-column prop="fields.hongSan" label="红3" width="80px" />
+      <el-table-column prop="fields.hongSi" label="红4" width="80px" />
+      <el-table-column prop="fields.hongWu" label="红5" width="80px" />
+      <el-table-column prop="fields.hongLiu" label="红6" width="80px" />
+      <el-table-column prop="fields.langQiu" label="蓝" width="80px" />
     </el-table-column>
-    <el-table-column prop="name" label="一等奖">
-      <el-table-column prop="name" label="注数" />
-      <el-table-column prop="name" label="金额" />
+    <el-table-column label="一等奖">
+      <el-table-column prop="fields.yiDengJiangZhuShu" label="注数" />
+      <el-table-column prop="fields.yiDengJiangJiangJin" label="金额" />
     </el-table-column>
     <el-table-column prop="name" label="二等奖">
-      <el-table-column prop="name" label="注数" />
-      <el-table-column prop="name" label="金额" />
-    </el-table-column>
-    <el-table-column prop="name" label="三等奖">
-      <el-table-column prop="name" label="注数" />
-      <el-table-column prop="name" label="金额" />
+      <el-table-column prop="fields.erDengJiangZhuShu" label="注数" />
+      <el-table-column prop="fields.erDengJiangJiangJin" label="金额" />
     </el-table-column>
   </el-table>
   <div class="demo-pagination-block">
@@ -94,19 +95,19 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { getName } from '@/api/requests/index'
+import { apiQuerySsqList, apiQuerySsqList2 } from './SsqIndexTs'
 
-const ssqList = [
+let ssqList = ref([
   {
     kaiJiangRiQi: '2016-05-03',
     qiCi: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
   },
-]
+])
 
 const labelPosition = ref('right')
 const lastQiCi = ref('ten')
-const pageInfo = ref({
+let pageInfo = ref({
   currentPage: 1,
   pageSize: 20,
   totalPage: 0,
@@ -118,20 +119,67 @@ const formLabelAlign = reactive({
   qiCiEnd: '',
   dataStart: '',
   dataEnd: '',
-  name: '',
-  region: '',
-  type: '',
 })
 
 // 查询
 function onSubmit() {
   console.log('submit!')
-  getName()
+  // 重新查询后轩当前页为1
+  pageInfo.value.currentPage = 1
+  querySsqList()
+
+  // ssqList.value = [
+  //   {
+  //     kaiJiangRiQi: '2016-05-03',
+  //     qiCi: 'Tom',
+  //     address: 'No. 189, Grove St, Los Angeles',
+  //   },
+  //   {
+  //     kaiJiangRiQi: '2016-05-03',
+  //     qiCi: 'Tom',
+  //     address: 'No. 189, Grove St, Los Angeles',
+  //   },
+  // ]
 }
 
 // 页数变更
-function handleSizeChange() {}
+function handleSizeChange() {
+  console.info('每页页数变更')
+  querySsqList()
+}
 
 // 跳转页
-function handleCurrentChange() {}
+function handleCurrentChange() {
+  console.info('中转至page:' + pageInfo.value.currentPage)
+  querySsqList()
+}
+
+async function querySsqList() {
+  const param = {
+    pageInfo: pageInfo.value,
+    formParm: formLabelAlign,
+  }
+  console.info('请求：' + JSON.stringify(param))
+
+  apiQuerySsqList(param)
+    .then((response) => {
+      console.info('response1:' + response)
+    })
+    .catch(() => {})
+    .finally(() => console.info('finally....'))
+
+  apiQuerySsqList2(param)
+    .then((response) => {
+      console.info('response2:' + response)
+      ssqList.value = response.body.data
+      pageInfo.value = response.body.pageInfo
+      console.info(ssqList)
+      console.info(pageInfo)
+    })
+    .catch(() => {})
+    .finally(() => console.info('finally....'))
+}
+</script>
+<script lang="ts">
+export default {}
 </script>

@@ -23,13 +23,13 @@ const setupAll = async () => {
   app.mount('#app')
 
   // 加载试卷
-  const getShijuan = new Promise((resolve, reject) => {
+  const getShijuan = new Promise<void>((resolve, reject) => {
     unuser(reject)
     // createApp(App).config.globalProperties.$shijuan = shijuan
     app.config.globalProperties.$shijuan = shijuan
     resolve()
   })
-  const getShiti = new Promise((resolve, reject) => {
+  const getShiti = new Promise<void>((resolve, reject) => {
     unuser(reject)
     // createApp(App).config.globalProperties.$shiti = shiti
     app.config.globalProperties.$shiti = shiti

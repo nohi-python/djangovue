@@ -30,6 +30,25 @@
 * 前端：yarn dev
 * 后端: python manage.py runserver
 
+### api
+* json
+  - http://127.0.0.1:8000/data/json/respJson1
+  - http://127.0.0.1:8000/data/json/respJson2
+  - http://127.0.0.1:8000/data/json/respJson3
+  - http://127.0.0.1:8000/data/json/respJson4
+* ssq
+  * 期次详情：
+      http://127.0.0.1:8000/data/22001/
+      http://127.0.0.1:8000/data/22001/results
+  * 列表数据：
+      http://127.0.0.1:8000/data/json/respJson3
+      http://127.0.0.1:8000/data/json/respJson4
+  * 数据刷新
+    * 双色球 数据刷新 startQiCi 开始期次   endQiCi结束期次
+      * POST http://{{server}}/data/ssqDataRefresh?startQiCi=03001&endQiCi=22001
+    * 双色球 数据刷新 定时任务
+      * GET http://{{server}}/data/ssqDataRefreshJob
+      
 ## 部署
 
 ## 版本

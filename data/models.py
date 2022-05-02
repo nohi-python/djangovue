@@ -42,6 +42,9 @@ class SsqModel(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.kaiJiangRiQi <= now
 
+    def __str__(self):
+        return self.qiCi
+
 
 # 大乐透
 class DltModel(models.Model):

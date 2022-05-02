@@ -6,8 +6,11 @@
 </head>
 <body>
 <h1>detail.html</h1>
-<h3>id: {{ question.id }} pub_date: {{ question.pub_date }}</h3>
-<h3>question_text: {{ question.question_text }}</h3>
+{% if detaItem %}
+  <h4>detaItem is not null</h4>
+{% endif %}
+<h3>jsonData: {{ jsonData }}</h3>
+<h3>qici: {{ detaItem.qiCi }}</h3>
 <ul>
 {% for choice in question.choice_set.all %}
     <li>{{ forloop.counter }},{{ choice.choice_text }} : {{ choice.votes }}</li>
@@ -20,7 +23,6 @@
 {% endfor %}
 </ul>
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
 </form>
 </body>
 </html>
