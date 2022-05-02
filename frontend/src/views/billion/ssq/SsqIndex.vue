@@ -41,11 +41,17 @@
       </el-col>
     </el-form-item>
     <el-form-item>
-      <el-radio-group v-model="lastQiCi">
-        <el-radio-button label="ten">最近10期</el-radio-button>
-        <el-radio-button label="twenty">最近20期</el-radio-button>
-        <el-radio-button label="hundred">最近100期</el-radio-button>
-      </el-radio-group>
+      <el-checkbox-group v-model="lastQiCi">
+        <el-checkbox-button label="ten" @click="lastQiCiClick('tent')"
+          >最近10期</el-checkbox-button
+        >
+        <el-checkbox-button label="twenty" @click="lastQiCiClick('twenty')"
+          >最近20期</el-checkbox-button
+        >
+        <el-checkbox-button label="hundred" @click="lastQiCiClick('houdred')"
+          >最近100期</el-checkbox-button
+        >
+      </el-checkbox-group>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -94,19 +100,12 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { apiQuerySsqList, apiQuerySsqList2 } from './SsqIndexTs'
+import { reactive, ref, watch } from 'vue'
+import { apiQuerySsqList2 } from './SsqIndexTs'
 
-let ssqList = ref([
-  {
-    kaiJiangRiQi: '2016-05-03',
-    qiCi: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-])
-
+let ssqList = ref([])
 const labelPosition = ref('right')
-const lastQiCi = ref('ten')
+const lastQiCi = ref([])
 let pageInfo = ref({
   currentPage: 1,
   pageSize: 20,
@@ -119,6 +118,32 @@ const formLabelAlign = reactive({
   qiCiEnd: '',
   dataStart: '',
   dataEnd: '',
+  lastQiCi: '',
+})
+
+// 选择值变
+function lastQiCiClick(val: string) {
+  console.info('val:' + val + ',curvalue:' + lastQiCi.value)
+  lastQiCi.value.forEach((item) => {
+    if (item != val) {
+      lastQiCi.value.pop(item)
+    }
+  })
+}
+
+// 事件监听
+watch(lastQiCi, (newValue, oldValue) => {
+  // oldValue 已经从click事件中删除，这里永远为''
+  console.info('lastQiCi.value:' + newValue + ', from:' + oldValue)
+  if (newValue != '') {
+    pageInfo.value.currentPage = 1
+    formLabelAlign.qiCiStart = ''
+    formLabelAlign.qiCiEnd = ''
+    formLabelAlign.dataStart = ''
+    formLabelAlign.dataEnd = ''
+    formLabelAlign.lastQiCi = newValue[0]
+    querySsqList()
+  }
 })
 
 // 查询
@@ -127,23 +152,10 @@ function onSubmit() {
   // 重新查询后轩当前页为1
   pageInfo.value.currentPage = 1
   querySsqList()
-
-  // ssqList.value = [
-  //   {
-  //     kaiJiangRiQi: '2016-05-03',
-  //     qiCi: 'Tom',
-  //     address: 'No. 189, Grove St, Los Angeles',
-  //   },
-  //   {
-  //     kaiJiangRiQi: '2016-05-03',
-  //     qiCi: 'Tom',
-  //     address: 'No. 189, Grove St, Los Angeles',
-  //   },
-  // ]
 }
 
 // 页数变更
-function handleSizeChange() {
+function handleSizeChange(): void {
   console.info('每页页数变更')
   querySsqList()
 }
@@ -161,18 +173,19 @@ async function querySsqList() {
   }
   console.info('请求：' + JSON.stringify(param))
 
-  apiQuerySsqList(param)
-    .then((response) => {
-      console.info('response1:' + response)
-    })
-    .catch(() => {})
-    .finally(() => console.info('finally....'))
+  // 自定义方式查询
+  // apiQuerySsqList(param)
+  //   .then((response) => {
+  //     console.info('response1:' + response)
+  //   })
+  //   .catch(() => {})
+  //   .finally(() => console.info('finally....'))
 
   apiQuerySsqList2(param)
     .then((response) => {
-      console.info('response2:' + response)
-      ssqList.value = response.body.data
-      pageInfo.value = response.body.pageInfo
+      // console.info('response2:' + JSON.stringify(response))
+      ssqList.value = response.data.body.data
+      pageInfo.value = response.data.body.pageInfo
       console.info(ssqList)
       console.info(pageInfo)
     })

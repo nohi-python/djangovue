@@ -61,9 +61,9 @@ service.interceptors.response.use(
     console.info('interceptors.response.use')
     debugger
     if (response.data.header.respCode === result_code) {
-      return response.data
+      return response
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.data.header.respMsg)
     }
   },
   (error: AxiosError) => {

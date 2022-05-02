@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useAxios } from '@/hooks/web/useAxios'
+import { ApiResponse } from '@/api/apitypes'
 const { request } = useAxios()
 
 function apiQuerySsqList(params) {
@@ -16,13 +17,10 @@ function apiQuerySsqList(params) {
 
 export { apiQuerySsqList }
 
-export const apiQuerySsqList2 = (data: object) => {
-  return request<{
-    total: number
-    list: UserType[]
-  }>({
+export const apiQuerySsqList2 = (data: any) => {
+  return request<ApiResponse>({
     url: '/api/data/ssqList',
-    method: 'POST',
+    method: 'post',
     data,
   } as AxiosConfig<Recordable>)
 }

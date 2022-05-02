@@ -235,24 +235,22 @@ def ssqList(request):
     formParm = reqInfo['body']['formParm']
 
     where = Q()
-    if formParm['qiCiStart'] is not None and formParm['qiCiStart'] != '':
-        q = Q(qiCi__gte=formParm['qiCiStart'])
-        where.add(q, Q.AND)
-    if formParm['qiCiEnd'] is not None and formParm['qiCiEnd'] != '':
-        q = Q(qiCi__lte=formParm['qiCiEnd'])
-        where.add(q, Q.AND)
-    if formParm['dataStart'] is not None and formParm['dataStart'] != '':
-        q = Q(kaiJiangRiQi__gte=formParm['dataStart'])
-        where.add(q, Q.AND)
-    if formParm['dataEnd'] is not None and formParm['dataEnd'] != '':
-        q = Q(kaiJiangRiQi__lte=formParm['dataEnd'])
-        where.add(q, Q.AND)
-    print('where===')
-    print(where)
-
-    # 返回JSON
-    infoList = SsqModel.objects.all().order_by('-kaiJiangRiQi').filter(where)
-    _print('数据记录数', len(infoList))
+    if formParm['lastQiCi'] is None or formParm['lastQiCi'] == '':
+        if formParm['qiCiStart'] is not None and formParm['qiCiStart'] != '':
+            q = Q(qiCi__gte=formParm['qiCiStart'])
+            where.add(q, Q.AND)
+        if formParm['qiCiEnd'] is not None and formParm['qiCiEnd'] != '':
+            q = Q(qiCi__lte=formParm['qiCiEnd'])
+            where.add(q, Q.AND)
+        if formParm['dataStart'] is not None and formParm['dataStart'] != '':
+            q = Q(kaiJiangRiQi__gte=formParm['dataStart'])
+            where.add(q, Q.AND)
+        if formParm['dataEnd'] is not None and formParm['dataEnd'] != '':
+            q = Q(kaiJiangRiQi__lte=formParm['dataEnd'])
+            where.add(q, Q.AND)
+        # 返回JSON
+        infoList = SsqModel.objects.all().order_by('-kaiJiangRiQi').filter(where)
+        _print('数据记录数', len(infoList))
 
     # 分页数据
     pageInfo = reqInfo['body']['pageInfo']
@@ -261,6 +259,28 @@ def ssqList(request):
     else:
         pageInfo = json.loads(json.dumps(pageInfo), object_hook=lambda d: Namespace(**d))
     _print('pageInfo', json.dumps(pageInfo, indent=4, cls=ClassEncoder, ensure_ascii=False))
+
+    lastNum = 0
+    if formParm['lastQiCi'] == 'ten':
+        lastNum = 10
+    elif formParm['lastQiCi'] == 'twenty':
+        lastNum = 20
+        pageInfo.pageSize = 20
+    elif formParm['lastQiCi'] == 'hundred':
+        lastNum = 100
+        pageInfo.pageSize = 100
+
+    _print('lastNum:', lastNum)
+    if lastNum > 0:
+        lastNum = lastNum
+        # 返回JSON
+        infoList = SsqModel.objects.all().order_by('-kaiJiangRiQi')
+        _print('数据记录数1:', len(infoList))
+        infoList = infoList[:lastNum]
+        _print('数据记录数2:', len(infoList))
+
+    print('where===')
+    print(where)
 
     paginator = Paginator(infoList, pageInfo.pageSize)  # 每页显示10条
     pageInfo.totalRow = paginator.count

@@ -68,3 +68,8 @@ class TestSsqService(TestCase):
         respInfo = json.loads(json_str, object_hook=lambda d: Namespace(**d))
         print('after loads')
         print(respInfo.header.tranCode, respInfo.header.reqTime)
+
+    def test_array(self):
+        var = range(20)
+        print(var)
+        print(var[-23:])

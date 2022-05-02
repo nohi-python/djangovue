@@ -11,7 +11,7 @@ export const useAxios = () => {
     // eslint-disable-next-line prefer-const
     let { url, method, params, data, headersType, responseType } = option
 
-    if (method.toUpperCase() == 'POST') {
+    if (method && 'POST' == method.toUpperCase()) {
       data = {
         header: {
           tranCode: 'QUERY',
