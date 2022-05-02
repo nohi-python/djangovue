@@ -65,11 +65,6 @@ class ApiRequest(object):
 
 # 响应
 class ApiResponse(object):
-    str_v1 = '1111'
-    str_v2 = 2222
-    header: ApiHeader = ApiHeader()
-    body: ApiResponseBody = ApiResponseBody()
-
     def __init__(self, str_v1: string = '1', str_v2: string = '2', header: ApiHeader = ApiHeader(),
                  body: ApiResponseBody = ApiResponseBody()):
         self.str_v1 = str_v1
