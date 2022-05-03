@@ -99,6 +99,6 @@ export const appModules: AppState = {
     // 头部悬停颜色
     topHeaderHoverColor: '#f6f6f6',
     // 头部边框颜色
-    topToolBorderColor: '#eee'
-  }
+    topToolBorderColor: '#eee',
+  },
 }

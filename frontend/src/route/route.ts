@@ -7,6 +7,7 @@ const DemoAjax = () => import('../views/demo/Ajax.vue')
 const ShitiIndex = () => import('../views/ShitiIndex.vue')
 const shiti = () => import('../views/shiti/Start.vue')
 const SsqIndex = () => import('../views/billion/ssq/SsqIndex.vue')
+const SsqDashboard = () => import('../views/billion/ssq/SsqDashboard.vue')
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -18,6 +19,7 @@ const routes = [
   { path: '/ShitiIndex', component: ShitiIndex },
   { path: '/shiti', component: shiti },
   { path: '/SsqIndex', component: SsqIndex },
+  { path: '/SsqDashboard', component: SsqDashboard },
 ]
 
 const router = createRouter({

@@ -25,6 +25,7 @@ export default {
     <router-link to="/ShitiIndex">Just Exam</router-link>
   </p>
   <p>
-    <router-link to="/SsqIndex">SsqIndex</router-link>
+    <router-link to="/SsqIndex">SsqIndex</router-link>&nbsp;
+    <router-link to="/SsqDashboard">SsqDashboard</router-link>
   </p>
 </template>
