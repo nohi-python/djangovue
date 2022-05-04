@@ -9,7 +9,7 @@ import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import styleImport, { ElementPlusResolve } from 'vite-plugin-style-import'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import PurgeIcons from 'vite-plugin-purge-icons'
-import { viteMockServe } from 'vite-plugin-mock'
+// import { viteMockServe } from 'vite-plugin-mock'
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
@@ -61,7 +61,9 @@ export default ({
   } else {
     env = loadEnv(mode, root)
   }
+
   return {
+    // 打包路径
     base: env.VITE_BASE_PATH,
     plugins: [
       Vue(),
@@ -94,17 +96,17 @@ export default ({
         svgoOptions: true,
       }),
       PurgeIcons(),
-      viteMockServe({
-        ignore: /^\_/,
-        mockPath: 'mock',
-        localEnabled: !isBuild,
-        prodEnabled: isBuild,
-        injectCode: `
-          import { setupProdMockServer } from '../mock/_createProductionServer'
-
-          setupProdMockServer()
-          `,
-      }),
+      // viteMockServe({
+      //   ignore: /^\_/,
+      //   mockPath: 'mock',
+      //   localEnabled: !isBuild,
+      //   prodEnabled: isBuild,
+      //   injectCode: `
+      //     import { setupProdMockServer } from '../mock/_createProductionServer'
+      //
+      //     setupProdMockServer()
+      //     `,
+      // }),
       DefineOptions(),
       createHtmlPlugin({
         inject: {

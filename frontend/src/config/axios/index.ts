@@ -46,6 +46,8 @@ service.interceptors.request.use(
       config.params = {}
       config.url = url
     }
+    console.info('==========config========')
+    console.info(config)
     return config
   },
   (error: AxiosError) => {
@@ -59,7 +61,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse<Recordable>) => {
     console.info('interceptors.response.use')
-    debugger
     if (response.data.header.respCode === result_code) {
       return response
     } else {

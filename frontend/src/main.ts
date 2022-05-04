@@ -37,6 +37,7 @@ const setupAll = async () => {
   })
   unuser(getShijuan)
   unuser(getShiti)
+  console.info('-==============')
 }
 
 setupAll()

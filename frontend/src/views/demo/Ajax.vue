@@ -4,16 +4,6 @@ import { ref, watch } from 'vue'
 import axios from 'axios'
 
 export default {
-  async beforeRouteUpdate(to, from) {
-    // 对路由变化做出响应...
-    console.info('to.params.id:' + to.params.id)
-  },
-  beforeRouteLeave(to, from) {
-    const answer = window.confirm(
-      'Do you really want to leave? you have unsaved changes!'
-    )
-    if (!answer) return false
-  },
   setup() {
     const route = useRoute()
     const userData = ref()
@@ -21,7 +11,7 @@ export default {
     // 当参数更改时获取用户信息
     watch(
       () => route.params,
-      async (newParams) => {
+      async () => {
         console.info('route.params:' + JSON.stringify(route.params))
         userData.value = route.params // await fetchUser(newParams.id)
       }

@@ -192,6 +192,8 @@ async function querySsqList() {
     .catch(() => {})
     .finally(() => console.info('finally....'))
 }
+
+console.info('env:' + import.meta.env.VITE_API_BASEPATH)
 </script>
 <script lang="ts">
 export default {}
