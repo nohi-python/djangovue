@@ -1,5 +1,6 @@
 <template>
   <h1>Dashboard</h1>
+  <el-button type="primary" @click="refreshData">同步数据</el-button>
   <el-form
     :inline="true"
     label-width="100px"
@@ -68,7 +69,10 @@
 import { ElRow, ElCol, ElCard, ElSkeleton } from 'element-plus'
 import { onMounted, reactive, ref, watch } from 'vue'
 import * as echarts from 'echarts'
-import { apiQuerySsqList2 } from '@/views/billion/ssq/SsqIndexTs'
+import {
+  apiQuerySsqList2,
+  apiRefreshData,
+} from '@/views/billion/ssq/SsqIndexTs'
 
 const loading = ref(false)
 let ssqList = ref([])
@@ -113,6 +117,14 @@ watch(lastQiCi, (newValue, oldValue) => {
   }
 })
 
+// 同步数据开始
+async function refreshData() {
+  console.log('同步数据开始!')
+  const data = await apiRefreshData()
+  console.info(data)
+  console.log('同步数据结束!')
+}
+
 // 查询
 function onSubmit() {
   console.log('submit!')
@@ -135,7 +147,7 @@ let myChart = null
 
 function line() {
   console.info('line')
-  myChart.setOption({
+  const option = {
     title: {
       text: '历史趋势！',
       textStyle: {
@@ -163,6 +175,9 @@ function line() {
     xAxis: {
       type: 'category',
       boundaryGap: false,
+      axisLabel: {
+        rotate: -45,
+      },
       data: xAxisData,
     },
     yAxis: {
@@ -179,40 +194,63 @@ function line() {
       {
         name: '红一',
         type: 'line',
+        itemStyle: {
+          color: '#fc8452',
+        },
         data: seriesData1,
       },
       {
         name: '红二',
         type: 'line',
+        itemStyle: {
+          color: '#fc8452',
+        },
         data: seriesData2,
       },
       {
         name: '红三',
         type: 'line',
+        itemStyle: {
+          color: '#fc8452',
+        },
         data: seriesData3,
       },
       {
         name: '红四',
         type: 'line',
+        itemStyle: {
+          color: '#fc8452',
+        },
         data: seriesData4,
       },
       {
         name: '红五',
         type: 'line',
+        itemStyle: {
+          color: '#fc8452',
+        },
         data: seriesData5,
       },
       {
         name: '红六',
         type: 'line',
+        itemStyle: {
+          color: '#fc8452',
+        },
         data: seriesData6,
       },
       {
         name: '蓝球',
         type: 'line',
+        itemStyle: {
+          color: 'blue',
+        },
         data: seriesData7,
       },
     ],
-  })
+  }
+  console.info(JSON.stringify(option))
+  myChart.setOption(option)
 }
 async function querySsqList() {
   const param = {

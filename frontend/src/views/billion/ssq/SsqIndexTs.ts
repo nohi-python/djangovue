@@ -3,7 +3,7 @@ import { useAxios } from '@/hooks/web/useAxios'
 import { ApiResponse } from '@/api/apitypes'
 const { request } = useAxios()
 
-function apiQuerySsqList(params) {
+export const apiQuerySsqList = (params: any) => {
   params = {
     header: {
       tranCode: 'QUERY',
@@ -15,7 +15,10 @@ function apiQuerySsqList(params) {
   return axios.post('/api/data/ssqList', params)
 }
 
-export { apiQuerySsqList }
+// 同步数据
+export const apiRefreshData = () => {
+  return axios.post('/api/data/ssqDataRefreshJob')
+}
 
 export const apiQuerySsqList2 = (data: any) => {
   return request<ApiResponse>({
