@@ -22,7 +22,7 @@ export const apiQuerySsqList = (params: any) => {
 
 // 同步数据
 export const apiRefreshData = () => {
-  return axios.post('/api/data/ssqDataRefreshJob')
+  return axios.post(PATH_URL + '/api/data/ssqDataRefreshJob')
 }
 
 export const apiQuerySsqList2 = (data: any) => {
